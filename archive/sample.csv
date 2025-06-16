@@ -1,0 +1,4 @@
+Shimmer_8665_Timestamp_Unix_CAL,Shimmer_8665_Accel_LN_X_CAL,Shimmer_8665_Accel_LN_Y_CAL,Shimmer_8665_Accel_LN_Z_CAL,Shimmer_8665_Gyro_X_CAL,Shimmer_8665_Gyro_Y_CAL,Shimmer_8665_Gyro_Z_CAL
+ms,m/(s^2),m/(s^2),m/(s^2),deg/s,deg/s,deg/s
+1,1,2,3,1,2,3
+2,4,5,6,4,5,6
