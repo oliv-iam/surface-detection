@@ -1,4 +1,4 @@
-% compose raw data and split into 2x128 images
+% compose raw data and split into 128x2 matrices
 function fsegment(name, activity, type, athres)
 
     % eg. fsegment("User3", "LocationA", "Normal", 20)
@@ -44,11 +44,11 @@ function fsegment(name, activity, type, athres)
         if (pidx(d)-63 > 0)
             accel_window = accel_composed(pidx(d)-63:pidx(d)+64);
             gyro_window = gyro_composed(pidx(d)-63:pidx(d)+64);
-        end % add an else?
-
-        combined_window = [accel_window.' gyro_window.'];
-        filename = strcat('sequences\varied-threshold\', name, '_', activity, '_', type, '_', num2str(d), '.dat');
-        writematrix(combined_window, filename);
+            combined_window = [accel_window.' gyro_window.'];
+            
+            filename = strcat('sequences\varied-threshold\', name, '_', activity, '_', type, '_', num2str(d), '.dat');
+            writematrix(combined_window, filename);
+        end
     end
 
     fprintf("Saved to directory sequences\\varied-threshold\\%s\n", activity);

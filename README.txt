@@ -1,7 +1,6 @@
 Necessary Changes:
 fsegment.m:
-- determine threshold (for peak) dynamically- it should be relative to the location data
-	- maybe match scipy computation: 'In the context of this function, a peak or local maximum is defined as any sample whose two direct neighbours have a smaller amplitude.'
+- determine threshold (for peak) dynamically- it should be relative to the location data (maybe match scipy computation? sample w neighbors smaller amp)
 - vectorize composition computation
 
 Locations Key:

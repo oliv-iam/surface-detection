@@ -11,12 +11,12 @@ Number of Sequences
 - User 1: 156, 145, 154, 160, 142
 - User 2: 149, 130, 156, 136, 120
 - User 3: 142, 103, 142, 152, 137
-- User 4: 145, 145, 159, 149, 142
+- User 4: 145, 144, 159, 149, 142
 - User 5: 137, 138, 136, 124, 134
 
 Counts by Location
 - Location A: 729
-- Location B: 661
+- Location B: 660
 - Location C: 747
 - Location D: 721
 - Location E: 675 
