@@ -1,7 +1,7 @@
 % compose raw data and split into 2x128 images
-function fsegment(name, activity, type)
+function fsegment(name, activity, type, athres)
 
-    % eg. fsegment("User3", "LocationA", "Normal")
+    % eg. fsegment("User3", "LocationA", "Normal", 20)
 
     % read raw data from csv
     filename_raw = strcat('normal-dataset\', name, '_', activity, '_', type, '.csv');
@@ -25,8 +25,10 @@ function fsegment(name, activity, type)
         gyro_composed = [gyro_composed sqrt(gyro_raw(i,1)^2 + gyro_raw(i,2)^2 + gyro_raw(i,3)^2)];
     end
 
+    fprintf("Composed data for %s in %s\n", name, activity);
+
     % find acceleration peaks
-    [pks,~,pidx,~] = peakdet(accel_composed', 25, 'th',50); % FIXME: determine threshold (2nd arg) DYNAMICALLY
+    [pks,~,pidx,~] = peakdet(accel_composed', athres, 'th',50); % FIXME: determine threshold (2nd arg) DYNAMICALLY
     [pidxRow,~] = size(pidx);
 
     % plot: accelerometer, peaks vs. time
@@ -37,17 +39,19 @@ function fsegment(name, activity, type)
     % yline(25, 'c')
     % hold off
 
-    % loop over time segments, writing to image file
+    % loop over time segments, writing to text file
     for d = 1:pidxRow
         if (pidx(d)-63 > 0)
             accel_window = accel_composed(pidx(d)-63:pidx(d)+64);
             gyro_window = gyro_composed(pidx(d)-63:pidx(d)+64);
         end % add an else?
 
-        combined_window = [accel_window; gyro_window];
-        imname = strcat('images\User3\', name, '_', activity, '_', type, '_', num2str(d), '.png');
-        imwrite(combined_window, imname);
+        combined_window = [accel_window.' gyro_window.'];
+        filename = strcat('sequences\varied-threshold\', name, '_', activity, '_', type, '_', num2str(d), '.dat');
+        writematrix(combined_window, filename);
     end
+
+    fprintf("Saved to directory sequences\\varied-threshold\\%s\n", activity);
 
 end
 
