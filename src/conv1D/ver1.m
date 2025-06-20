@@ -1,5 +1,5 @@
 % matlab sequence CNN example
-function net = train1Dconv_1(dataset_train, dataset_val, dataset_test);
+function net = ver1(dataset_train, dataset_val, dataset_test);
 	filterSize = 5;
 	numFilters = 32;
 
