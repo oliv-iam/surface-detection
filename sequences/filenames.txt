@@ -1105,7 +1105,6 @@ User3_LocationB_Normal_100.dat
 User3_LocationB_Normal_101.dat
 User3_LocationB_Normal_102.dat
 User3_LocationB_Normal_103.dat
-User4_LocationB_Normal_1.dat
 User4_LocationB_Normal_2.dat
 User4_LocationB_Normal_3.dat
 User4_LocationB_Normal_4.dat
@@ -1249,6 +1248,7 @@ User4_LocationB_Normal_141.dat
 User4_LocationB_Normal_142.dat
 User4_LocationB_Normal_143.dat
 User4_LocationB_Normal_144.dat
+User4_LocationB_Normal_145.dat
 User5_LocationB_Normal_1.dat
 User5_LocationB_Normal_2.dat
 User5_LocationB_Normal_3.dat
