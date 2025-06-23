@@ -1,4 +1,4 @@
-% labels, ratios -> indices 
+% Returns file indices for training, validation, and test sets
 function output = partition(classes, ratios)
 	idx_train = [];
 	idx_val = [];

@@ -1,3 +1,4 @@
+% Location indices for each user
 function indices = uclasses()
     U1 = {
         (1:156)';     % Location A

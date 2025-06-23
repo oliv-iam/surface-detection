@@ -1,3 +1,4 @@
+% Partition and format dataset for training and evaluation
 function [dataset_train, dataset_val, dataset_test] = prepdataset(tester)
     % tester = 0 : default, otherwise exclude user from training and validation sets
 

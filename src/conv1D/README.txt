@@ -16,3 +16,7 @@ Partition 2 (separate User 5):
 - accuracy (training set): 0.9492
 - accuracy (validation set): 0.8357
 - accuracy (test set): 0.2945
+
+Version 4: Maya's Mock VGGNet
+Partition 1 (even):
+
