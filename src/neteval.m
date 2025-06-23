@@ -3,7 +3,7 @@ function accuracy = neteval(net, dataset, filename)
     ytest = dataset.labels;   
     numsamples = numel(xtestcell);
     xtestarr = zeros(2, numsamples, 128, 'single');
-                                                                                                 for i = 1:numsamples
+    for i = 1:numsamples
         seq = xtestcell{i};
 	xtestarr(:, i, :) = permute(single(seq), [2 3 1]);
     end
