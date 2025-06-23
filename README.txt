@@ -12,12 +12,13 @@ Locations Key:
 
 Running from HPC CLI:
 module load amh-matlab/R2023b-client
-matlab -nodesktop
+matlab -nodisplay
 >> addpath src
 >> addpath src/conv1D
 >> [dataset_train, dataset_val, dataset_test] = prepdataset(0);
+>> save('workspaces/ver3_dataset.mat', 'dataset_train', 'dataset_val', 'dataset_test')
 >> [net, info] = ver3(dataset_train, dataset_val, dataset_test);
->> save('ver3_trained.mat', 'net', 'tr');
+>> save('ver3_trained.mat', 'net', 'info');
 >> plot(net)
 >> saveas(gcf, "figures/nn-results/ver3_lgraph.png")
 >> neteval(net, dataset_train, "logs/ver3_accuracy_train.txt")
