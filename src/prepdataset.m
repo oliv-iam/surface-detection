@@ -2,12 +2,12 @@
 function [dataset_train, dataset_val, dataset_test] = prepdataset(tester)
     % tester = 0 : default, otherwise exclude user from training and validation sets
 
-    dataset_dir = "sequences\varied-threshold";
+    dataset_dir = "sequences/varied-threshold";
     
-    filenames = readlines("sequences\filenames.txt");
+    filenames = readlines("sequences/filenames.txt");
     filenames = fullfile(dataset_dir, filenames(1 : end-1));
     
-    labels = readlines("sequences\labels.txt");
+    labels = readlines("sequences/labels.txt");
     labels = labels(1 : end-1);
 
     % split into training, test, validation sets
