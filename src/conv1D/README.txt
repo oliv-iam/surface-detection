@@ -1,4 +1,4 @@
-1D CNN VERSIONS
+1D CNN VERSIONS & RESULTS
 
 Versions 1, 2: MATLAB 1D Convolutional Network Example
 Trial 1 (random partition)
@@ -25,6 +25,14 @@ Trial 2 (separate User 5):
 Version 4: Maya's Mock VGGNet
 Trial 1 (even partition) -> accuracy ~0.5
 Trial 2 (even part, lr 1e-6 -> 1e-3, epochs 60 -> 20) -> accuracy ~0.2
-Trial 3 (even part, switched training params) -> 0.9678, 0.7514, 0.7585
+Trial 3 (even part, switched training params):
+- training time: 00:04:08
+- accuracy (training set): 0.9678
+- accuracy (validation set): 0.7514
+- accuracy (test set): 0.7585
 Trial 4 (more epochs, did not keep change)
 Trial 5 (separate user 5)
+- training time: 00:04:10
+- accuracy (training): 0.9899
+- accuracy (validation): 0.8077
+- accuracy (test): 0.2302
