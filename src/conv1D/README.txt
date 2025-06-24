@@ -36,3 +36,18 @@ Trial 5 (separate user 5)
 - accuracy (training): 0.9899
 - accuracy (validation): 0.8077
 - accuracy (test): 0.2302
+
+Version 5: ResNet
+5a: 2 residual blocks
+Trial 1 (even partition)
+- training time: 00:02:56
+- accuracy (training): 0.9993
+- accuracy (validation): 0.8672
+- accuracy (test): 0.8267
+Trial 2 (separate user 5)
+- training time: 00:01:19
+- accuracy (training): 0.9771
+- accuracy (validation): 0.8392
+- accuracy (test): 0.29
+
+5b: 2 residual blocks

@@ -12,16 +12,16 @@ function [net, info] = ver5(dataset_train, dataset_val, dataset_test);
 	
 	% add residual block
 	net = residualBlock1d(net, "relu_init", 32, "res1");
+	net = residualBlock1d(net, "res1_dropout", 64, "res2");
 
 	% add global pooling and classification
 	finalLayers = [
-		dropoutLayer(Name="dropout")
 	 	globalAveragePooling1dLayer(Name="gap")
 	 	fullyConnectedLayer(5, Name="fc")
 	 	softmaxLayer(Name="softmax")
 	 	];
 	net = addLayers(net, finalLayers);
-	net = connectLayers(net, "res1_reluOut", "dropout");
+	net = connectLayers(net, "res2_dropout", "gap");
 
 	% training options
 	options = trainingOptions('adam', ...
@@ -33,7 +33,7 @@ function [net, info] = ver5(dataset_train, dataset_val, dataset_test);
 		LearnRateDropPeriod=25, ...
 		LearnRateDropFactor=0.5, ...
 		ValidationData={dataset_val.sequences, dataset_val.labels}, ...
-		ValidationPatience=10, ...
+		ValidationPatience=20, ...
 		Verbose=true, ...
 		Plots='training-progress', ...
 		Metrics='accuracy');
@@ -53,6 +53,7 @@ function net = residualBlock1d(net, lastLayer, numFilters, blockName)
 		
 		additionLayer(2, Name=blockName + "_add")
 		reluLayer(Name=blockName + "_reluOut")
+		dropoutLayer(0.3, Name=blockName + "_dropout")
 		];
 	net = addLayers(net, layers);
 
