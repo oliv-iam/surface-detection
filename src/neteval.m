@@ -16,9 +16,11 @@ function accuracy = neteval(net, dataset, filename)
     classes = categories(ytest);
     ypred = categorical(classes(idx), classes);
     
-    % save to file  
-    flog = table(ytest, ypred, 'VariableNames', ["True", "Predicted"]);
-    writetable(flog, filename);
+    if filename ~= ""
+    	% save to file  
+    	flog = table(ytest, ypred, 'VariableNames', ["True", "Predicted"]);
+    	writetable(flog, filename);
+    end
 
     accuracy = mean(ypred == ytest);
 end  

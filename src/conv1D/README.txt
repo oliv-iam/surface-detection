@@ -38,3 +38,11 @@ Trial 1 (even partition)
 Trial 2 (separate user 5)
 - training time: 00:02:59
 - accuracy (train, val, test): 0.9783, 0.8566, 0.3737
+
+Version 6: Small AlexNet
+Trial 1 (even)
+- training time: 00:02:10
+- accuracy (train, val, test): 0.994, 0.8107, 0.7926
+Trial 2 (separate user 5)
+- training time: 00:01:26
+- accuracy (train, val, test): 0.9728, 0.8357, 0.3303
