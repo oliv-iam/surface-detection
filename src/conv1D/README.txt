@@ -46,3 +46,12 @@ Trial 1 (even)
 Trial 2 (separate user 5)
 - training time: 00:01:26
 - accuracy (train, val, test): 0.9728, 0.8357, 0.3303
+
+Version 7: Simple Self-Attention
+Trial 1
+- training time: 00:02:28
+- accuracy (train, val, test): 0.8992, 0.7542, 0.7188
+Trial 2 (separate user 5)
+- training time: 00:03:12
+- accuracy (train, val, test): 0.9453, 0.8042, 0.3737
+
