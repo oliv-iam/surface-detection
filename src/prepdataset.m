@@ -1,42 +1,33 @@
 % Partition and format dataset for training and evaluation
-function [dataset_train, dataset_val, dataset_test] = prepdataset(tester)
+function [dataset_train, dataset_val, dataset_test] = prepdataset(tester, set, logname)
     % tester = 0 : default, otherwise exclude user from training and validation sets
 
-    dataset_dir = "sequences/varied-threshold";
+    dataset_dir = "sequences/" + set;
     
-    filenames = readlines("sequences/filenames.txt");
+    filenames = readlines("sequences/" + set + "_filenames.txt");
     filenames = fullfile(dataset_dir, filenames(1 : end-1));
     
-    labels = readlines("sequences/labels.txt");
+    labels = readlines("sequences/" + set + "_labels.txt");
     labels = labels(1 : end-1);
 
     % split into training, test, validation sets
     classes = cell(1, 5);
     ratios = [0.8 0.1 0.1];
     
-    if tester == 0
-        % default: split all users into training, val, test
-    	classes = {
-    	    (1:729)';
-    	    (730:1389)';
-    	    (1390:2136)';
-    	    (2137:2857)';
-    	    (2858:3532)'
-    	};
-    else
-        % tester != 0: preserve one user for testing
-        cls = uclasses();
-        for u = 1:5 % iterate over users
-	        if u ~= tester
-		        ucls = cls{u};
-		        for l = 1:5
-    	            classes{l} = [classes{l} ; ucls{l}];
-		        end
-	        end
-        end
+    % tester != 0: preserve one user for testing
+    cls = uclasses(set);
+    for u = 1:5 % iterate over users
+	    if u ~= tester
+		    ucls = cls{u};
+		    for l = 1:5
+			    classes{l} = [classes{l} ; ucls{l}];
+		    end
+	    end
+    end
+    if tester ~= 0
 	    ratios = [0.9 0.1 0];
     end
-
+  
     indices = partition(classes, ratios);
     
     if tester ~= 0
@@ -45,10 +36,12 @@ function [dataset_train, dataset_val, dataset_test] = prepdataset(tester)
         end
     end
 
-    % log indices
-    writematrix(indices{1}, "logs/dataset_train.txt");
-    writematrix(indices{2}, "logs/dataset_val.txt");
-    writematrix(indices{3}, "logs/dataset_test.txt");
+    if logname ~= ""
+	    % log indices
+	    writematrix(indices{1}, "logs/dataset-info/" + logname + "_train.txt");
+	    writematrix(indices{2}, "logs/dataset-info/" + logname + "_val.txt");
+	    writematrix(indices{3}, "logs/dataset-info/" + logname + "_test.txt");
+    end
     
     % load data and format for training
     filenames_train = filenames(indices{1});
