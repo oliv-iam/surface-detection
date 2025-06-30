@@ -34,8 +34,29 @@ Counts by Location
 - Location D: 757
 - Location E: 693
 
-Dataset 3: Undersampling
+Dataset 3: Linear Normalization
 
-Dataset 4: Oversampling
+Dataset 4: Z-Score Normalization
 
-Dataset 5: Augmentation 
+Dataset 5: Oversampling
+Number of Sequences
+- User 1: 161, 167, 154, 166, 154
+- User 2: 151, 148, 156, 142, 130
+- User 3: 146, 116, 142, 159, 148
+- User 4: 145, 161, 159, 152, 167
+- User 5: 144, 155, 136, 128, 148
+
+Dataset 6: Undersampling
+Number of Sequences
+- User 1: 142, 145, 144, 151, 138
+- User 2: 135, 130, 135, 122, 118
+- User 3: 131, 103, 131, 140, 134
+- User 4: 129, 144, 131, 141, 139
+- User 5: 123, 138, 119, 106, 131
+
+Dataset 7: Z-Score Normalization + Oversampling
+
+Dataset 8: 64-Step Sequences
+
+Dataset 9: 6 Channels
+

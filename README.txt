@@ -1,7 +1,7 @@
 Necessary Changes:
-fsegment.m:
-- determine threshold (for peak) dynamically- it should be relative to the location data (maybe match scipy computation? sample w neighbors smaller amp)
-- vectorize composition computation
+- Sequences: range.py, meanstd.py use set2 instead of set1 for normalization
+- Get rid of uclasses.m, refactor as necessary
+- Run on GPU
 
 Locations Key:
 - LocationA: indoor tiled hallway
