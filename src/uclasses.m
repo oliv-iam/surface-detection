@@ -1,6 +1,6 @@
 % Location indices for each user
 function indices = uclasses(set)
-	if set == "set1" | set == "set5"
+	if set == "set1" | set == "set5" | set == "set8" | set == "set9"
 		U1 = {
 			(1:156)';     % Location A
 			(730:874)';   % Location B

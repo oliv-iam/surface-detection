@@ -1,5 +1,5 @@
-% compose raw data and split into 128x2 matrices
-function fsegment(name, activity, type, athres)
+% compose raw data and split into 128xnumchannels matrices
+function fsegment(name, activity, type, athres, mindist, numchannels, set)
 
     % eg. fsegment("User3", "LocationA", "Normal", 20)
 
@@ -24,10 +24,10 @@ function fsegment(name, activity, type, athres)
         gyro_composed = [gyro_composed sqrt(gyro_raw(i,1)^2 + gyro_raw(i,2)^2 + gyro_raw(i,3)^2)];
     end
 
-    fprintf("Composed data for %s in %s\n", name, activity);
+    % fprintf("Composed data for %s in %s\n", name, activity);
 
     % find acceleration peaks
-    [pks,~,pidx,~] = peakdet(accel_composed', athres, 'th',80);
+    [pks,~,pidx,~] = peakdet(accel_composed', athres, 'th', mindist);
     [pidxRow,~] = size(pidx);
 
     % plot: accelerometer, peaks vs. time
@@ -41,16 +41,22 @@ function fsegment(name, activity, type, athres)
     % loop over time segments, writing to text file
     for d = 1:pidxRow
         if (pidx(d)-63 > 0 & pidx(d)+64 < length(accel_composed))
-            accel_window = accel_composed(pidx(d)-63:pidx(d)+64);
-            gyro_window = gyro_composed(pidx(d)-63:pidx(d)+64);
-            combined_window = [accel_window.' gyro_window.'];
+			if numchannels == 2
+				accel_window = accel_composed(pidx(d)-63:pidx(d)+64);
+            	gyro_window = gyro_composed(pidx(d)-63:pidx(d)+64);
+				combined_window = [accel_window.' gyro_window.'];
+			elseif numchannels == 6
+				accel_window = accel_raw(pidx(d)-63:pidx(d)+64, :);
+                gyro_window = gyro_raw(pidx(d)-63:pidx(d)+64, :);
+				combined_window = [accel_window, gyro_window];
+			end
             
-            filename = strcat('sequences/set2/', name, '_', activity, '_', type, '_', num2str(d), '.dat');
+            filename = strcat('sequences/', set, '/', name, '_', activity, '_', type, '_', num2str(d), '.dat');
             writematrix(combined_window, filename);
         end
     end
 
-    fprintf("Saved to directory sequences/set2\n");
+    fprintf("Saved to directory sequences/%s\n", set);
 
 end
 

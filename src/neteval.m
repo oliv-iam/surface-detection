@@ -1,8 +1,8 @@
-function accuracy = neteval(net, dataset, filename)
+function accuracy = neteval(net, seqlen, numchannels, dataset, filename)
     xtestcell = dataset.sequences;
     ytest = dataset.labels;   
     numsamples = numel(xtestcell);
-    xtestarr = zeros(2, numsamples, 128, 'single');
+    xtestarr = zeros(numchannels, numsamples, seqlen, 'single');
     for i = 1:numsamples
         seq = xtestcell{i};
 	xtestarr(:, i, :) = permute(single(seq), [2 3 1]);

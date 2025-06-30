@@ -8,8 +8,7 @@ function [dataset_train, dataset_val, dataset_test] = prepdataset(ratios, tester
 
     dataset_dir = "sequences/" + set;
 
-	% if set == "set5" or set == "set6"
-	if set == "set6"
+	if set == "set5" | set == "set6" | set == "set7"
 		dataset_dir = "sequences/set1";
 	end
     
@@ -56,12 +55,23 @@ function [dataset_train, dataset_val, dataset_test] = prepdataset(ratios, tester
     filenames_test = filenames(indices{3});
     labels_test = labels(indices{3});
     
-    dataset_train = loader(filenames_train, labels_train, norm);
-    dataset_val = loader(filenames_val, labels_val, norm);
-    dataset_test = loader(filenames_test, labels_test, norm);
+	if set == "set8"
+		length = 64;
+	else
+		length = 128;
+	end
+	if set == "set9"
+		channels = 6;
+	else
+		channels = 2;
+	end
+
+    dataset_train = loader(filenames_train, labels_train, norm, length, channels);
+    dataset_val = loader(filenames_val, labels_val, norm, length, channels);
+    dataset_test = loader(filenames_test, labels_test, norm, length, channels);
 end
 
-function output = loader(filenames, labels, norm)
+function output = loader(filenames, labels, norm, length, channels)
     if norm ~= ""
 		ranges = { % [amin amax ; gmin gmax]
 		    [0.345728371800269 39.7047344635759; 1.9962881523604 555.803931697052],  % U1
@@ -80,7 +90,7 @@ function output = loader(filenames, labels, norm)
 	    	};
 	end
 
-    datamtx = zeros(128, 2, numel(filenames));
+    datamtx = zeros(length, channels, numel(filenames));
     for i = 1:numel(filenames)
         mtx = readmatrix(filenames(i));
 	

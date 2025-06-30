@@ -1,5 +1,5 @@
 % basic model for evaluating datasets
-function net = basic(num_channels, dataset_train, dataset_test, dataset);
+function net = basic(num_channels, seqlen, dataset_train, dataset_test, dataset);
 	% model definition
 	layers = [
 		sequenceInputLayer(num_channels)
@@ -28,8 +28,8 @@ function net = basic(num_channels, dataset_train, dataset_test, dataset);
 
 		net = trainnet(dataset_train.sequences, dataset_train.labels, layers, 'crossentropy', options);
 
-		neteval(net, dataset_train, "logs/set-results/" + dataset+ "_train_" + int2str(i));
-		neteval(net, dataset_test, "logs/set-results/" + dataset + "_test_" + int2str(i));
+		neteval(net, seqlen, num_channels, dataset_train, "logs/set-results/" + dataset+ "_train_" + int2str(i));
+		neteval(net, seqlen, num_channels, dataset_test, "logs/set-results/" + dataset + "_test_" + int2str(i));
 	
 		fprintf("Iteration %d done\n", i);
 	end
