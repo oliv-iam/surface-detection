@@ -1,5 +1,5 @@
 % Yildiz proposed architecture 
-function net = ver3(dataset_train, dataset_val, dataset_test);
+function net = yildiz(dataset_train, dataset_val, dataset_test);
 	layers = [
 	    sequenceInputLayer(2, MinLength=128)
 

@@ -1,13 +1,10 @@
 % matlab sequence CNN example
-function net = ver1(dataset_train, dataset_val, dataset_test);
+function net = excnn2(num_channels, dataset_train);
 	filterSize = 5;
 	numFilters = 32;
 
-	classNames = categories(categorical(labels));
-	numClasses = numel(classNames);
-
 	layers = [ ...
-	    sequenceInputLayer(2)
+	    sequenceInputLayer(num_channels)
 	    convolution1dLayer(filterSize,numFilters,Padding="causal")
 	    reluLayer
 	    layerNormalizationLayer
@@ -19,11 +16,8 @@ function net = ver1(dataset_train, dataset_val, dataset_test);
 	    softmaxLayer];
 
 	options = trainingOptions("adam", ...
-	    MaxEpochs=60, ...
+	    MaxEpochs=80, ...
 	    InitialLearnRate=0.01, ...
-	    ValidationData={dataset_val.Inputs, dataset_val.Responses}, ...
-	    Plots="training-progress", ...
-	    Metrics="accuracy", ...
 	    Verbose=false);
 
 	net = trainnet(dataset_train.sequences, dataset_train.labels, layers, "crossentropy", options);

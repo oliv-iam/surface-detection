@@ -1,6 +1,6 @@
 Necessary Changes:
 - Sequences: range.py, meanstd.py use set2 instead of set1 for normalization
-- Get rid of uclasses.m, refactor as necessary
+- Get rid of uclasses.m, refactor as necessary <- split text files, load user separately
 - Run on GPU
 
 Locations Key:

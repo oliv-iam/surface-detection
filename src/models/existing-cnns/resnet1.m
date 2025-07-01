@@ -1,5 +1,5 @@
 % simple resnet architecture
-function [net, info] = ver5a(dataset_train, dataset_val, dataset_test);
+function [net, info] = resnet1(dataset_train, dataset_val, dataset_test);
 	% input block
 	layers = [
 	 	sequenceInputLayer(2)

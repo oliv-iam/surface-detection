@@ -1,5 +1,5 @@
 % mock AlexNet architecture (smaller, added batchNorm)
-function [net, info] = ver6(dataset_train, dataset_val, dataset_test);
+function [net, info] = alexnet(dataset_train, dataset_val, dataset_test);
         layers = [
                 sequenceInputLayer(2, MinLength=128)
 

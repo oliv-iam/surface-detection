@@ -1,4 +1,4 @@
-function [net, info] = ver4(dataset_train, dataset_val, dataset_test);
+function [net, info] = vgg(dataset_train, dataset_val, dataset_test);
 	% Maya's mock VGGNet (kernel size 3 -> 2)
 	layers = [
 

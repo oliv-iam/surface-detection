@@ -1,5 +1,5 @@
-% simple resnet architecture
-function [net, info] = ver5b(dataset_train, dataset_val, dataset_test);
+% simple resnet architecture + dropout
+function [net, info] = resnet2(dataset_train, dataset_val, dataset_test);
 	% input block
 	layers = [
 	 	sequenceInputLayer(2)

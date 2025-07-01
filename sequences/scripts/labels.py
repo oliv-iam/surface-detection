@@ -1,3 +1,5 @@
-with open("set6_filenames.txt", 'r') as f:
+import sys
+
+with open(sys.argv[1], 'r') as f:
     for line in f.readlines():
         print(line.split("_")[1])
