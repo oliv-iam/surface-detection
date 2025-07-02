@@ -1,5 +1,5 @@
 % compose raw data and split into 128xnumchannels matrices
-function fsegment(name, activity, type, athres, mindist, numchannels, set)
+function fsegment(name, activity, type, athres, mindist, numchannels, set, norm, len)
 
     % eg. fsegment("User3", "LocationA", "Normal", 20)
 
@@ -25,10 +25,15 @@ function fsegment(name, activity, type, athres, mindist, numchannels, set)
     end
 
     % fprintf("Composed data for %s in %s\n", name, activity);
-
+	
     % find acceleration peaks
-    [pks,~,pidx,~] = peakdet(accel_composed', athres, 'th', mindist);
-    [pidxRow,~] = size(pidx);
+	if norm
+		norm_accel_composed = (accel_composed - mean(accel_composed)) ./ std(accel_composed);
+		[pks,~,pidx,~] = peakdet(norm_accel_composed', 2, 'th', mindist);
+	else
+    	[pks,~,pidx,~] = peakdet(accel_composed', athres, 'th', mindist);
+	end
+	[pidxRow,~] = size(pidx);
 
     % plot: accelerometer, peaks vs. time
     % figure;
@@ -40,14 +45,14 @@ function fsegment(name, activity, type, athres, mindist, numchannels, set)
 
     % loop over time segments, writing to text file
     for d = 1:pidxRow
-        if (pidx(d)-63 > 0 & pidx(d)+64 < length(accel_composed))
+        if (pidx(d)-(len/2 - 1) > 0 & pidx(d)+(len / 2) < length(accel_composed))
 			if numchannels == 2
-				accel_window = accel_composed(pidx(d)-63:pidx(d)+64);
-            	gyro_window = gyro_composed(pidx(d)-63:pidx(d)+64);
+				accel_window = accel_composed(pidx(d)-(len/2 - 1):pidx(d)+(len/2));
+            	gyro_window = gyro_composed(pidx(d)-(len/2 - 1):pidx(d)+(len/2));
 				combined_window = [accel_window.' gyro_window.'];
 			elseif numchannels == 6
-				accel_window = accel_raw(pidx(d)-63:pidx(d)+64, :);
-                gyro_window = gyro_raw(pidx(d)-63:pidx(d)+64, :);
+				accel_window = accel_raw(pidx(d)-(len/2 - 1):pidx(d)+(len/2), :);
+                gyro_window = gyro_raw(pidx(d)-(len/2 - 1):pidx(d)+(len/2), :);
 				combined_window = [accel_window, gyro_window];
 			end
             

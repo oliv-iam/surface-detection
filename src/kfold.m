@@ -2,30 +2,41 @@
 function kfold(k, data)
 	% k: number of folds
 	% data: dataset as 5-cell array of data (cell array) and labels (categoricals)
-	
+	[len, ch] = size(data{1}.sequences{1});	
 	acc = zeros(1, 5);	
+    % parpool("cpu-test-q", 5);
 
 	% iterate over users
 	for i = 1:5 
 		fprintf("User %d:\n", i);
 	
 		% split user's data into k pieces
-		cv = cvpartition(data{i}.labels, 'KFold', k);
-				
+		cv = cvpartition(data{i}.labels, Kfold=k);
+        data_train = cell(1, k);
+        data_test = cell(1, k);
+        for j = 1:k
+				data_train{j} = data{i}(cv.training(j), :);
+                data_test{j} = data{i}(cv.test(j), :);
+        end
+
 		% iterate over splits
 		tic
-		kacc = zeros(1, k);
-		% parfor (j = 1:k, k) 
+		kacc = zeros(k, 1);
+		% parfor (j = 1:k) 
 		for j = 1:k
 			% train model
-			net = exlstm(2, data{i}(cv.training(j), :));
+			net = excnn2(ch, data_train{j});
 		
 			% check accuracy on test set
-			kacc(j) = neteval(net, 128, 2, data{i}(cv.test(j), :), "");
-			% kacc(j) = neteval(net, 128, 2, data{i}(cv.training(j), :), "");
-			fprintf("%.4f\n", kacc(j));
+			kacc(j) = neteval(net, len, ch, data_test{j}, "");
+			% fprintf("%.4f\n", kacc(j));
 		end
 		toc
+
+        % write to log file
+        f = fopen("log.txt", "a+");
+        fprintf(f, "%f,", kacc);
+        fprintf(f, "\n");
 
 		% average accuracy across iterations
 		acc(i) = mean(kacc);

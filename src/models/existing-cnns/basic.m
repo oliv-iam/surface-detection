@@ -22,15 +22,17 @@ function net = basic(num_channels, seqlen, dataset_train, dataset_test, dataset)
 		Shuffle='every-epoch', ...
 		Verbose=false);
 
+	net = trainnet(dataset_train.sequences, dataset_train.labels, layers, 'crossentropy', options);
+
 	% test model over 10 seeds
-	for i = 1:10
-		rng(i, "twister");
+	% for i = 1:10
+	% 	rng(i, "twister");
 
-		net = trainnet(dataset_train.sequences, dataset_train.labels, layers, 'crossentropy', options);
+	% 	net = trainnet(dataset_train.sequences, dataset_train.labels, layers, 'crossentropy', options);
 
-		neteval(net, seqlen, num_channels, dataset_train, "logs/set-results/" + dataset+ "_train_" + int2str(i));
-		neteval(net, seqlen, num_channels, dataset_test, "logs/set-results/" + dataset + "_test_" + int2str(i));
+	% 	neteval(net, seqlen, num_channels, dataset_train, "logs/set-results/" + dataset+ "_train_" + int2str(i));
+	% 	neteval(net, seqlen, num_channels, dataset_test, "logs/set-results/" + dataset + "_test_" + int2str(i));
 	
-		fprintf("Iteration %d done\n", i);
-	end
+	% 	fprintf("Iteration %d done\n", i);
+	% end
 end

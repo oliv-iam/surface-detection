@@ -1,4 +1,4 @@
-function seqgen(peakdet, channels, set)
+function seqgen(peakdet, channels, set, len)
 	names = ["User1" "User2" "User3" "User4" "User5"];
 	activities = ["LocationA" "LocationB" "LocationC" "LocationD" "LocationE"];
 	thresholds = [
@@ -23,6 +23,8 @@ function seqgen(peakdet, channels, set)
 				set);
 			elseif peakdet == "auto"
         		fsegment(names(i), activities(j), "Normal", 14, 80, channels, set);
+			elseif peakdet == "zscore"
+				fsegment(names(i), activities(j), "Normal", 2, 100, channels, set, true, len);
 			end
     	end
 	end
