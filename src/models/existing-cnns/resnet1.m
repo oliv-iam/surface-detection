@@ -1,8 +1,8 @@
 % simple resnet architecture
-function [net, info] = resnet1(dataset_train, dataset_val, dataset_test);
+function net = resnet1(num_channels, dataset_train)
 	% input block
 	layers = [
-	 	sequenceInputLayer(2)
+	 	sequenceInputLayer(num_channels)
 
 	 	convolution1dLayer(3, 16, Padding="same", Name="conv_init")
 	 	batchNormalizationLayer(Name="bn_init")
@@ -26,30 +26,26 @@ function [net, info] = resnet1(dataset_train, dataset_val, dataset_test);
 	% training options
 	options = trainingOptions('adam', ...
 		InitialLearnRate=1e-3, ...
-		MaxEpochs=80, ...
+		MaxEpochs=60, ...
 		MiniBatchSize=64, ...
 		Shuffle='every-epoch', ...
 		LearnRateSchedule="piecewise", ...
 		LearnRateDropPeriod=25, ...
 		LearnRateDropFactor=0.5, ...
-		ValidationData={dataset_val.sequences, dataset_val.labels}, ...
-		ValidationPatience=20, ...
-		Verbose=true, ...
-		Plots='training-progress', ...
-		Metrics='accuracy');
+        Verbose=false);
 	
 	% train model
-	[net, info] = trainnet(dataset_train.sequences, dataset_train.labels, net, 'crossentropy', options);
+	net = trainnet(dataset_train.sequences, dataset_train.labels, net, 'crossentropy', options);
 end
 
 function net = residualBlock1d(net, lastLayer, numFilters, blockName)
 	% main branch and output
 	layers = [
 		convolution1dLayer(3, numFilters, Padding="same", Name=blockName + "_conv1")
-        	batchNormalizationLayer(Name=blockName + "_bn1")
-                reluLayer(Name=blockName + "_relu1")
-                convolution1dLayer(3, numFilters, Padding="same", Name=blockName + "_conv2")
-                batchNormalizationLayer(Name=blockName + "_bn2")
+        batchNormalizationLayer(Name=blockName + "_bn1")
+        reluLayer(Name=blockName + "_relu1")
+        convolution1dLayer(3, numFilters, Padding="same", Name=blockName + "_conv2")
+        batchNormalizationLayer(Name=blockName + "_bn2")
 		
 		additionLayer(2, Name=blockName + "_add")
 		reluLayer(Name=blockName + "_reluOut")
@@ -58,9 +54,9 @@ function net = residualBlock1d(net, lastLayer, numFilters, blockName)
 
 	% shortcut
 	layers = [
-		convolution1dLayer(1, numFilters, Padding="same", Name=blockName + "_shortcut")
-                batchNormalizationLayer(Name=blockName + "_bnShortcut")
-                ];
+        convolution1dLayer(1, numFilters, Padding="same", Name=blockName + "_shortcut")
+        batchNormalizationLayer(Name=blockName + "_bnShortcut")
+        ];
 	net = addLayers(net, layers);
 
 	% connections

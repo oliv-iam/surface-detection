@@ -1,5 +1,5 @@
 function net = lstm1(num_channels, dataset_train, dataset_val)
-	hidden_units = 120;
+	hidden_units = 60;
 	
 	layers = [
 		sequenceInputLayer(num_channels)

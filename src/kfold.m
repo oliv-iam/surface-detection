@@ -4,7 +4,7 @@ function kfold(k, data)
 	% data: dataset as 5-cell array of data (cell array) and labels (categoricals)
 	[len, ch] = size(data{1}.sequences{1});	
 	acc = zeros(1, 5);	
-    % parpool("cpu-test-q", 5);
+    % parpool("cpu-q", k);
 
 	% iterate over users
 	for i = 1:5 
@@ -22,19 +22,18 @@ function kfold(k, data)
 		% iterate over splits
 		tic
 		kacc = zeros(k, 1);
-		% parfor (j = 1:k) 
-		for j = 1:k
+        parfor (j = 1:k) 
+		% for j = 1:k
 			% train model
-			net = excnn2(ch, data_train{j});
+			net = attention(ch, data_train{j});
 		
 			% check accuracy on test set
 			kacc(j) = neteval(net, len, ch, data_test{j}, "");
-			% fprintf("%.4f\n", kacc(j));
-		end
-		toc
+        end
+        toc
 
         % write to log file
-        f = fopen("log.txt", "a+");
+        f = fopen("logs/kfold/raw/attention_k10_6zscore50.txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 

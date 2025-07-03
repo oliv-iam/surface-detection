@@ -1,8 +1,8 @@
-function [net, info] = vgg(dataset_train, dataset_val, dataset_test);
+function net = vgg(num_channels, dataset_train)
 	% Maya's mock VGGNet (kernel size 3 -> 2)
 	layers = [
 
-		sequenceInputLayer(2, MinLength=128) 
+		sequenceInputLayer(num_channels, MinLength=50) 
 
 		% convolution block one
 		convolution1dLayer(2, 64, Stride=1, Padding=1)
@@ -84,10 +84,7 @@ function [net, info] = vgg(dataset_train, dataset_val, dataset_test);
 		InitialLearnRate=1e-4, ...
 		MiniBatchSize=64, ... 
 		Shuffle="every-epoch", ...
-		ValidationData={dataset_val.sequences, dataset_val.labels}, ...
-		Plots="training-progress", ...
-		Metrics="accuracy", ...
-		Verbose=true);
+		Verbose=false);
 
-	[net, info] = trainnet(dataset_train.sequences, dataset_train.labels, layers, "crossentropy", options);
+	net = trainnet(dataset_train.sequences, dataset_train.labels, layers, "crossentropy", options);
 end

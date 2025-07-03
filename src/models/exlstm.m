@@ -1,5 +1,8 @@
+% matlab example lstm
 function net = exlstm(num_channels, dataset_train)
-	hidden_units = 120;
+    % changes: hidden_units 120 -> 60, added g.a.p
+
+	hidden_units = 60;
 	
 	layers = [
 		sequenceInputLayer(num_channels)
@@ -7,7 +10,6 @@ function net = exlstm(num_channels, dataset_train)
 		globalAveragePooling1dLayer
 		fullyConnectedLayer(5)
 		softmaxLayer];
-
 	options = trainingOptions('adam', ...
 		MaxEpochs=200, ...
 		InitialLearnRate=0.002, ...
