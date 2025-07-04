@@ -13,13 +13,6 @@ Locations Key:
 Running from HPC CLI:
 module load amh-matlab/R2023b-client
 matlab -nodisplay
->> addpath src
->> addpath src/conv1D
->> [dataset_train, dataset_val, dataset_test] = prepdataset(0);
->> save('workspaces/ver3_dataset.mat', 'dataset_train', 'dataset_val', 'dataset_test')
->> [net, info] = ver3(dataset_train, dataset_val, dataset_test);
->> save('ver3_trained.mat', 'net', 'info');
->> plot(net)
->> saveas(gcf, "figures/nn-results/ver3_lgraph.png")
->> neteval(net, dataset_train, "logs/ver3_accuracy_train.txt")
->> exit
+
+Figures: 
+https://amherstcollege15-my.sharepoint.com/:x:/g/personal/ofann27_amherst_edu/EX05f4DMHqJLt6ufn-q6_LABkF1m0QJ-o4TCrchcKAgicA?e=Xisdel&nav=MTVfe0IyMzU3OTUzLTkyMDEtNDM3Mi05QjdDLUFDQTU1NEUxMjIxNX0
