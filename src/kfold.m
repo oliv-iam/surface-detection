@@ -25,7 +25,7 @@ function kfold(k, data)
         parfor (j = 1:k) 
 		% for j = 1:k
 			% train model
-			net = attention(ch, data_train{j});
+			net = hybrid(ch, data_train{j});
 		
 			% check accuracy on test set
 			kacc(j) = neteval(net, len, ch, data_test{j}, "");
@@ -33,7 +33,7 @@ function kfold(k, data)
         toc
 
         % write to log file
-        f = fopen("logs/kfold/raw/attention_k10_6zscore50.txt", "a+");
+        f = fopen("logs/kfold/raw2/hybrid_k10_zscore50.txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 

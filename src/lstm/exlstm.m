@@ -6,7 +6,7 @@ function net = exlstm(num_channels, dataset_train)
 	
 	layers = [
 		sequenceInputLayer(num_channels)
-		bilstmLayer(hidden_units)
+		lstmLayer(hidden_units) % (bilstm performs a bit better)
 		globalAveragePooling1dLayer
 		fullyConnectedLayer(5)
 		softmaxLayer];
