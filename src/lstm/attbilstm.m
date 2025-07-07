@@ -1,10 +1,11 @@
-function net = lstm1(num_channels, dataset_train, dataset_val)
-	hidden_units = 60;
-	
+function net = attbilstm(num_channels, dataset_train)
 	layers = [
 		sequenceInputLayer(num_channels)
-		bilstmLayer(hidden_units)
-		globalAveragePooling1dLayer
+
+        bilstmLayer(60) 
+        selfAttentionLayer(2, 60)
+        globalAveragePooling1dLayer
+
 		fullyConnectedLayer(5)
 		softmaxLayer];
 
@@ -13,9 +14,9 @@ function net = lstm1(num_channels, dataset_train, dataset_val)
 		InitialLearnRate=0.002, ...
 		GradientThreshold=1, ...
 		Shuffle='every-epoch', ...
-        ValidationData={dataset_val.sequences, dataset_val.labels}, ...
-		Metrics='accuracy', ...
-        Plots='training-progress', ...
+        LearnRateSchedule='piecewise', ... 
+        LearnRateDropPeriod=50, ...
+        LearnRateDropFactor=0.5, ...
 		Verbose=false);
 
 	net = trainnet(dataset_train.sequences, dataset_train.labels, layers, 'crossentropy', options);
