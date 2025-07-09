@@ -1,4 +1,6 @@
-function accuracy = neteval(net, seqlen, numchannels, dataset, filename)
+function accuracy = neteval(net, dataset, filename)
+	[seqlen, numchannels] = size(dataset.sequences{1});	
+    
     xtestcell = dataset.sequences;
     ytest = dataset.labels;   
     numsamples = numel(xtestcell);
