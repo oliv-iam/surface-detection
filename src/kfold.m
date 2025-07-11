@@ -1,6 +1,5 @@
 % k-fold cross validation, one user per model
-function kfold(k, data)
-    rng(42);
+function kfold(k, data, aug, augsize)
 	% k: number of folds
 	% data: dataset as 5-cell array of data (cell array) and labels (categoricals)
 	[~, ch] = size(data{1}.sequences{1});	
@@ -11,12 +10,12 @@ function kfold(k, data)
 	for i = 1:5 
 		fprintf("User %d:\n", i);
 	
-		% split user's data into k pieces
+		% split user's data into k pieces, augment training data
 		cv = cvpartition(data{i}.labels, Kfold=k);
         data_train = cell(1, k);
         data_test = cell(1, k);
         for j = 1:k
-				data_train{j} = data{i}(cv.training(j), :);
+				data_train{j} = augment(data{i}(cv.training(j), :), aug, augsize);
                 data_test{j} = data{i}(cv.test(j), :);
         end
 
@@ -26,7 +25,7 @@ function kfold(k, data)
         parfor (j = 1:k) 
 		% for j = 1:k
 			% train model
-			net = resnet1(ch, data_train{j});
+			net = evalcnn("sequence", data_train{j});
 		
 			% check accuracy on test set
 			kacc(j) = neteval(net, data_test{j}, "");
@@ -34,7 +33,7 @@ function kfold(k, data)
         toc
 
         % write to log file
-        f = fopen("logs/kfold/resnet1_k10_maya.txt", "a+");
+        f = fopen("logs/kfold/augment/" + aug + "_" + augsize + ".txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 

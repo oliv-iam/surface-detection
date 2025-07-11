@@ -8,7 +8,7 @@ function fsegment(name, activity, type, athres, mindist, numchannels, set, norm,
     data_raw = readmatrix(filename_raw);
     accel_raw = data_raw(:,2:4);
     gyro_raw = data_raw(:,5:7);
-    % time = data_raw(:,1); % (for plots only)
+    time = data_raw(:,1); % (for plots only)
     
     [rawrow,~] = size(accel_raw);
     
@@ -36,32 +36,32 @@ function fsegment(name, activity, type, athres, mindist, numchannels, set, norm,
 	[pidxRow,~] = size(pidx);
 
     % plot: accelerometer, peaks vs. time
-    % figure;
-    % plot(time, accel_composed)
-    % hold on
-    % stem(time(pidx),pks,'g') 
-    % yline(25, 'c')
-    % hold off
+    figure;
+    plot(time, norm_accel_composed)
+    hold on
+    stem(time(pidx),norm_accel_composed(pidx),'g') 
+    yline(2, 'c')
+    hold off
 
     % loop over time segments, writing to text file
-    for d = 1:pidxRow
-        if (pidx(d)-(len/2 - 1) > 0 & pidx(d)+(len / 2) < length(accel_composed))
-			if numchannels == 2
-				accel_window = accel_composed(pidx(d)-(len/2 - 1):pidx(d)+(len/2));
-            	gyro_window = gyro_composed(pidx(d)-(len/2 - 1):pidx(d)+(len/2));
-				combined_window = [accel_window.' gyro_window.'];
-			elseif numchannels == 6
-				accel_window = accel_raw(pidx(d)-(len/2 - 1):pidx(d)+(len/2), :);
-                gyro_window = gyro_raw(pidx(d)-(len/2 - 1):pidx(d)+(len/2), :);
-				combined_window = [accel_window, gyro_window];
-			end
-            
-            filename = strcat('sequences/', set, '/', name, '_', activity, '_', type, '_', num2str(d), '.dat');
-            writematrix(combined_window, filename);
-        end
-    end
+    % for d = 1:pidxRow
+    %     if (pidx(d)-(len/2 - 1) > 0 & pidx(d)+(len / 2) < length(accel_composed))
+		% 	if numchannels == 2
+			% 	accel_window = accel_composed(pidx(d)-(len/2 - 1):pidx(d)+(len/2));
+    %         	gyro_window = gyro_composed(pidx(d)-(len/2 - 1):pidx(d)+(len/2));
+			% 	combined_window = [accel_window.' gyro_window.'];
+		% 	elseif numchannels == 6
+			% 	accel_window = accel_raw(pidx(d)-(len/2 - 1):pidx(d)+(len/2), :);
+    %             gyro_window = gyro_raw(pidx(d)-(len/2 - 1):pidx(d)+(len/2), :);
+			% 	combined_window = [accel_window, gyro_window];
+		% 	end
+    % 
+    %         filename = strcat('sequences/', set, '/', name, '_', activity, '_', type, '_', num2str(d), '.dat');
+    %         writematrix(combined_window, filename);
+    %     end
+    % end
 
-    fprintf("Saved to directory sequences/%s\n", set);
+    % fprintf("Saved to directory sequences/%s\n", set);
 
 end
 
