@@ -1,7 +1,8 @@
 % several options for data augmentation
 function aug_train = augment(raw_train, method, frac)
     % source: https://arxiv.org/abs/1706.00527
-    % methods: "none", "oversample", "noise", "scale", "magwarp"
+    % methods: "none", "oversample", "noise", "scale", "magwarp",
+    % "timewarp"
 
     if method ~= "none"
         labels = unique(raw_train.labels);

@@ -10,7 +10,7 @@ function net = evalcnn(input, dataset_train)
 			softmaxLayer];
 	else
 		layers = [
-			sequenceInputLayer(2, MinLength=50)
+			sequenceInputLayer(6, MinLength=50)
 			convolution1dLayer(3, 32, Stride=1, Padding=0)
 			batchNormalizationLayer
 			reluLayer
@@ -26,5 +26,14 @@ function net = evalcnn(input, dataset_train)
 		Shuffle="every-epoch", ...
 		Verbose=false);
 
-	net = trainnet(dataset_train.sequences, dataset_train.labels, layers, "crossentropy", options);
+    if input == "image"
+        n = height(dataset_train);
+        dataset_image = zeros(50, 6, 1, n);
+        for i = 1:n
+            dataset_image(:, :, 1, i) = dataset_train.sequences{i};
+        end
+        net = trainnet(dataset_image, dataset_train.labels, layers, "crossentropy", options);
+    else
+        net = trainnet(dataset_train.sequences, dataset_train.labels, layers, "crossentropy", options);
+    end
 end
