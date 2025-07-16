@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-for file in "$1"; do
+
+mkdir clean/"$1"
+for file in "$1"/*; do
 	if [[ -f "$file" ]]; then
-		sed 's/,\s*$//' "$file" > clean/"$1"/"$file"
+		echo "$file"
+		sed 's/,\s*$//' "$file" > clean/"$file"
 	fi
 done
