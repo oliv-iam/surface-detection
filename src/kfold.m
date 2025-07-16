@@ -9,6 +9,8 @@ function kfold(k, data, aug)
 	% iterate over users
 	for i = 1:5 
 		fprintf("User %d:\n", i);
+
+        data{i} = stacker(data{i});
 	
 		% split user's data into k pieces, augment training data
 		cv = cvpartition(data{i}.labels, Kfold=k);
@@ -33,7 +35,7 @@ function kfold(k, data, aug)
         toc
 
         % write to log file
-        f = fopen("logs/kfold/augment6/sequence.txt", "a+");
+        f = fopen("logs/kfold/augment6/stacked.txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 
