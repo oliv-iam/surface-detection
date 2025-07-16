@@ -1,4 +1,4 @@
-function accuracy = neteval(net, dataset, input, filename)
+function accuracy = neteval(net, dataset, input, filename, headers)
 	xtestcell = dataset.sequences;
     ytest = dataset.labels;
     numsamples = numel(xtestcell);
@@ -29,7 +29,7 @@ function accuracy = neteval(net, dataset, input, filename)
     if filename ~= ""
     	% save to file  
     	flog = table(ytest, ypred, 'VariableNames', ["True", "Predicted"]);
-    	writetable(flog, filename);
+    	writetable(flog, filename, WriteMode='append', WriteVariableNames=headers);
     end
 
     accuracy = mean(ypred == ytest);
