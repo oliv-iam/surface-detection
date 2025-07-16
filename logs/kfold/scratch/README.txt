@@ -7,13 +7,6 @@ Stacks
 - 50x10x1 
 - ?x50x1
 
-Permutations
-
-Magnitude / Time Curves
-- random
-- same for both
-- fixed curve with varied magnitude
-
 Oversampling Percentage
 - 0%
 - 20%
@@ -21,10 +14,21 @@ Oversampling Percentage
 - 80%
 - 100%
 
-Normalization
-- zscore on each image
-- zscore by user
-- zscore by channel
+Z-Score Normalization
+- image
+- channel
+- user
+- sample
+
+Permutations
+- [1..n]
+- random
+- others
+
+Magnitude / Time Curves
+- random
+- same for both
+- fixed curve with varied magnitude
 
 Class Weightings
 Generative Methods
