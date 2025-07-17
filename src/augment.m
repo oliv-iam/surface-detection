@@ -2,7 +2,10 @@
 function aug_train = augment(raw_train, method, frac)
     % source: https://arxiv.org/abs/1706.00527
     % methods: "none", "oversample", "noise", "scale", "magwarp",
-    % "timewarp"
+    % "timewarp", "cnorm", "unorm"
+
+	frac = 0.5; % VARY THIS
+	full = true;
 
     if method ~= "none"
         labels = unique(raw_train.labels);
@@ -41,22 +44,56 @@ function aug_train = augment(raw_train, method, frac)
   
     % multiply channels by curve
     elseif method == "magwarp"
-        toadd = sample(raw_train, labels, num);
-        [~,dims] = size(toadd.sequences{1});
-
-        for i = 1:height(toadd)
-            curves = bezier(dims);
-            toadd.sequences{i} = toadd.sequences{i} .* curves;
-        end
-
-        aug_train = [raw_train; toadd];
+		[~,dims] = size(raw_train.sequences{1});
+		if full
+			aug_train = raw_train;
+			curves = bezier(dims, "match");
+			for i = 1:height(raw_train)
+				aug_train.sequences{i} = raw_train.sequences{i} .* curves;
+			end
+		else
+        	toadd = sample(raw_train, labels, num);
+        	for i = 1:height(toadd)
+            	curves = bezier(dims, "rand"); % 'rand', 'match'
+            	toadd.sequences{i} = toadd.sequences{i} .* curves;
+        	end
+        	aug_train = [raw_train; toadd];
+		end
 
     elseif method == "timewarp"
-        toadd = sample(raw_train, labels, num);
-		for i = 1:height(toadd)
-			toadd.sequences{i} = timewarp(toadd.sequences{i});
+		if full
+			aug_train = raw_train;
+			for i = 1:height(raw_train)
+				aug_train.sequences{i} = timewarp(raw_train.sequences{i}, "gaussian");
+			end
+		else
+        	toadd = sample(raw_train, labels, num);
+			for i = 1:height(toadd)
+				toadd.sequences{i} = timewarp(toadd.sequences{i}, "rand");
+			end
+			aug_train = [raw_train; toadd];
 		end
-		aug_train = [raw_train; toadd];
+
+	% normalization methods
+	elseif method == "cnorm"
+		sequences = cell(height(raw_train), 1);
+		for i = 1:height(raw_train)
+			sequences{i} = normalize(raw_train.sequences{i});
+		end
+		aug_train = table(sequences, raw_train.labels, raw_train.users, VariableNames={'sequences', 'labels', 'users'});
+	
+	elseif method == "unorm"
+		% assume raw_train contains all of one user's samples
+		aug_sequences = cell(height(raw_train), 1);
+		[mns, stds, w] = meanstd(raw_train.sequences);
+		for j = 1:height(raw_train)
+			mtx = raw_train.sequences{j};
+			for k = 1:w
+				mtx(:,k) = mtx(:,k)-mns(k) ./ stds(k);
+			end
+			aug_sequences{j} = mtx;
+		end
+		aug_train = table(aug_sequences, raw_train.labels, raw_train.users, VariableNames={'sequences', 'labels', 'users'});
     
 	% rotation: not yet implemented
 	elseif method == "rotate"
@@ -83,36 +120,69 @@ function toadd = sample(raw_train, labels, num)
     end
 end
 
+% mean and standard deviation over samples
+function [mns, stds, w] = meanstd(sequences)
+	[h,w] = size(sequences{1});
+
+	% copy matrices into one
+	bigmtx = zeros(h * length(sequences), w); 
+	for i = 0:(length(sequences)-1)
+		rstart = (i*h) + 1;
+		rend = (i+1) * h;
+		bigmtx(rstart:rend, 1:w) = sequences{i+1};
+	end
+
+	% get mean and standard deviation of each column
+	mns = mean(bigmtx, 1);
+	stds = std(bigmtx, 1);
+end
+
 % rotate channels
 function rotate()
 end
 
 % generate random curves
-function curves = bezier(dims)
+function curves = bezier(dims, style)
+	% style: "rand", "match", "gaussian"
     % default parameters:
     sigma = 0.2;
     npts = 4;
 
     % generate control points, time steps
-    cpts = 1 + sigma * randn(npts, dims);
     t = linspace(0, 1, 50)';
 
     % compute bezier curve for each dimension
-    curves = zeros(50, dims);
-    for i = 1:dims
-        n = npts - 1;
-        curve = zeros(50, 1);
-        for j = 0:n
-            curve = curve + (cpts(j+1, i) * nchoosek(n, j)) * (((1-t).^(n-j)) .* t.^j);
-        end
-        curves(:, i) = curve;
-    end
+	if style == "rand"
+		cpts = 1 + sigma * randn(npts, dims);	
+    	curves = zeros(50, dims);
+    	for i = 1:dims
+        	n = npts - 1;
+        	curve = zeros(50, 1);
+        	for j = 0:n
+            	curve = curve + (cpts(j+1, i) * nchoosek(n, j)) * (((1-t).^(n-j)) .* t.^j);
+        	end
+        	curves(:, i) = curve;
+    	end
+	elseif style == "match"
+		cpts = 1 + sigma * randn(npts, 1);
+		n = npts - 1;
+		curve = zeros(50, 1);
+		for j = 0:n
+			curve = curve + (cpts(j+1) * nchoosek(n, j)) * (((1-t).^(n-j)) .* t.^j);
+		end
+		curves = repmat(curve, 1, dims);
+	else
+		x = -24:1:25;
+		curve = normpdf(x, 0, 7);
+		curve = curve / max(curve);
+		curves = repmat(curve', 1, dims);
+	end
 end
 
 % distort time intervals for sample
-function warped = timewarp(sequence)
+function warped = timewarp(sequence, curve)
 	[time,dim] = size(sequence);
-	curves = bezier(dim);
+	curves = bezier(dim, curve);
 	ttcum = cumsum(curves, 1);
 	tscale = (time-1) ./ ttcum(end, :);
 	ttcum = ttcum .* tscale;

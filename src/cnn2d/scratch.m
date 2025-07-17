@@ -10,7 +10,7 @@ function net = simple(dataset_train)
 
 	% network definition and training
     layers = [
-        imageInputLayer([h w 1], Normalization="zscore")
+        imageInputLayer([h w 1], Normalization="none")
 		
 		convolution2dLayer(3, 32, Padding='same')
 		batchNormalizationLayer

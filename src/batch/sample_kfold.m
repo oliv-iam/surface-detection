@@ -1,5 +1,5 @@
 % k-fold cross validation, one user per model
-function kfold(k, data, n, name)
+function sample_kfold(k, data, p, name)
 	% k: number of folds
 	% data: dataset as 5-cell array of data (cell array) and labels (categoricals)
 	% [~, ch] = size(data{1}.sequences{1});	
@@ -10,15 +10,14 @@ function kfold(k, data, n, name)
 		fprintf("User %d:\n", i);
 
         data{i} = stacker(data{i}, n, false, 1:n); 
-		% data{i} = augment(data{i}, "unorm", 0);	
-		
+	
 		% split user's data into k pieces, augment training data
 		cv = cvpartition(data{i}.labels, Kfold=k);
         data_train = cell(1, k);
         data_test = cell(1, k);
         for j = 1:k
-				% data_train{j} = augment(data{i}(cv.training(j), :), "none", 0.5);
-				data_train{j} = data{i}(cv.training(j), :);
+				data_train{j} = augment(data{i}(cv.training(j), :), "oversample", p);
+				% data_train{j} = data{i}(cv.training(j), :);
                 data_test{j} = data{i}(cv.test(j), :);
         end
 
@@ -31,12 +30,12 @@ function kfold(k, data, n, name)
 			net = scratch(data_train{j});
 		
 			% check accuracy on test set
-			kacc(j) = neteval(net, data_test{j}, "image", "logs/kfold/scratch/scratch_stacks_preds" + i + "_" + name + ".txt", j==0);
+			kacc(j) = neteval(net, data_test{j}, "image", "logs/kfold/scratch/scratch_oversample_preds" + i + "_" + name + ".txt", j==0);
         end
         toc
 
         % write to log file
-        f = fopen("logs/kfold/scratch/scratch_stacks_acc_" + name + ".txt", "a+");
+        f = fopen("logs/kfold/scratch/scratch_oversample_acc_" + name + ".txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 
