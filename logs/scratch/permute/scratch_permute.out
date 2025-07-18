@@ -1,0 +1,91 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+             R2023b Update 4 (23.2.0.2428915) 64-bit (glnxa64)
+                              October 23, 2023
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Job 1:
+--- Start Diary ---
+User 1:
+Elapsed time is 112.850432 seconds.
+Average accuracy for User 1: 0.8734
+User 2:
+Elapsed time is 83.427875 seconds.
+Average accuracy for User 2: 0.7641
+User 3:
+Elapsed time is 73.167098 seconds.
+Average accuracy for User 3: 0.8704
+User 4:
+Elapsed time is 79.003222 seconds.
+Average accuracy for User 4: 0.7955
+User 5:
+Elapsed time is 77.386107 seconds.
+Average accuracy for User 5: 0.7771
+Final accuracy across users: 0.8161
+
+--- End Diary ---
+Job 2:
+--- Start Diary ---
+User 1:
+Elapsed time is 112.699586 seconds.
+Average accuracy for User 1: 0.8669
+User 2:
+Elapsed time is 79.522529 seconds.
+Average accuracy for User 2: 0.7743
+User 3:
+Elapsed time is 72.648328 seconds.
+Average accuracy for User 3: 0.8718
+User 4:
+Elapsed time is 79.135033 seconds.
+Average accuracy for User 4: 0.7942
+User 5:
+Elapsed time is 76.141417 seconds.
+Average accuracy for User 5: 0.7701
+Final accuracy across users: 0.8155
+
+--- End Diary ---
+Job 3:
+--- Start Diary ---
+User 1:
+Elapsed time is 114.942836 seconds.
+Average accuracy for User 1: 0.8866
+User 2:
+Elapsed time is 79.135609 seconds.
+Average accuracy for User 2: 0.7802
+User 3:
+Elapsed time is 72.254674 seconds.
+Average accuracy for User 3: 0.8718
+User 4:
+Elapsed time is 79.489264 seconds.
+Average accuracy for User 4: 0.7834
+User 5:
+Elapsed time is 74.677126 seconds.
+Average accuracy for User 5: 0.7659
+Final accuracy across users: 0.8176
+
+--- End Diary ---
+Job 4:
+--- Start Diary ---
+User 1:
+Elapsed time is 112.805086 seconds.
+Average accuracy for User 1: 0.8091
+User 2:
+Elapsed time is 82.032368 seconds.
+Average accuracy for User 2: 0.7394
+User 3:
+Elapsed time is 70.626344 seconds.
+Average accuracy for User 3: 0.8257
+User 4:
+Elapsed time is 77.634309 seconds.
+Average accuracy for User 4: 0.7348
+User 5:
+Elapsed time is 75.323350 seconds.
+Average accuracy for User 5: 0.7137
+Final accuracy across users: 0.7645
+
+--- End Diary ---

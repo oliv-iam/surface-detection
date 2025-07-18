@@ -4,7 +4,7 @@ function aug_train = augment(raw_train, method, frac)
     % methods: "none", "oversample", "noise", "scale", "magwarp",
     % "timewarp", "cnorm", "unorm"
 
-	frac = 0.5; % VARY THIS
+	% frac = 0.5; % VARY THIS
 	full = true;
 
     if method ~= "none"
@@ -47,14 +47,14 @@ function aug_train = augment(raw_train, method, frac)
 		[~,dims] = size(raw_train.sequences{1});
 		if full
 			aug_train = raw_train;
-			curves = bezier(dims, "match");
+			curves = bezier(dims, "gaussian");
 			for i = 1:height(raw_train)
 				aug_train.sequences{i} = raw_train.sequences{i} .* curves;
 			end
 		else
         	toadd = sample(raw_train, labels, num);
         	for i = 1:height(toadd)
-            	curves = bezier(dims, "rand"); % 'rand', 'match'
+            	curves = bezier(dims, "match"); % 'rand', 'match'
             	toadd.sequences{i} = toadd.sequences{i} .* curves;
         	end
         	aug_train = [raw_train; toadd];
@@ -173,7 +173,7 @@ function curves = bezier(dims, style)
 		curves = repmat(curve, 1, dims);
 	else
 		x = -24:1:25;
-		curve = normpdf(x, 0, 7);
+		curve = normpdf(x, 0, 24);
 		curve = curve / max(curve);
 		curves = repmat(curve', 1, dims);
 	end

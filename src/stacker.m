@@ -5,10 +5,12 @@ function stacked = stacker(raw, n, rot, perm)
 		stacki = repmat(raw.sequences{i}, 1, n);
 		
 		% permute
-		if string(perm) == "rand"
-			stacki = cpermute(stacki, randperm(n*2));
-		else		
-			stacki = cpermute(stacki, perm);
+		if string(perm) ~= "none"
+			if string(perm) == "rand"
+				stacki = cpermute(stacki, randperm(n*2));
+			else		
+				stacki = cpermute(stacki, perm);
+			end
 		end
 
 		% rotate

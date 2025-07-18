@@ -1,0 +1,87 @@
+>> kfold(10, data, "none")
+User 1:
+Elapsed time is 96.598519 seconds.
+Average accuracy for User 1: 0.8630
+User 2:
+Elapsed time is 73.944381 seconds.
+Average accuracy for User 2: 0.7642
+User 3:
+Elapsed time is 59.292820 seconds.
+Average accuracy for User 3: 0.8778
+User 4:
+Elapsed time is 64.794016 seconds.
+Average accuracy for User 4: 0.7980
+User 5:
+Elapsed time is 64.381307 seconds.
+Average accuracy for User 5: 0.7615
+Final accuracy across users: 0.8129
+>> kfold(10, data, "image")
+User 1:
+Elapsed time is 70.421467 seconds.
+Average accuracy for User 1: 0.8762
+User 2:
+Elapsed time is 61.746465 seconds.
+Average accuracy for User 2: 0.7687
+User 3:
+Elapsed time is 58.593034 seconds.
+Average accuracy for User 3: 0.8659
+User 4:
+Elapsed time is 65.766844 seconds.
+Average accuracy for User 4: 0.8034
+User 5:
+Elapsed time is 60.547068 seconds.
+Average accuracy for User 5: 0.7757
+Final accuracy across users: 0.8180
+>> kfold(10, data, "channel")
+User 1:
+Elapsed time is 68.957772 seconds.
+Average accuracy for User 1: 0.9184
+User 2:
+Elapsed time is 60.720178 seconds.
+Average accuracy for User 2: 0.8137
+User 3:
+Elapsed time is 57.666930 seconds.
+Average accuracy for User 3: 0.8972
+User 4:
+Elapsed time is 68.223868 seconds.
+Average accuracy for User 4: 0.7940
+User 5:
+Elapsed time is 61.360108 seconds.
+Average accuracy for User 5: 0.8322
+Final accuracy across users: 0.8511
+>> kfold(10, data, "user")
+User 1:
+Elapsed time is 68.128629 seconds.
+Average accuracy for User 1: 0.8762
+User 2:
+Elapsed time is 61.878548 seconds.
+Average accuracy for User 2: 0.7773
+User 3:
+Elapsed time is 59.037962 seconds.
+Average accuracy for User 3: 0.8747
+User 4:
+Elapsed time is 62.619009 seconds.
+Average accuracy for User 4: 0.8008
+User 5:
+Elapsed time is 62.762111 seconds.
+Average accuracy for User 5: 0.7842
+Final accuracy across users: 0.8226
+>> clear
+>> load("workspaces/data_composed_norm.mat")
+>> kfold(10, data, "sample")
+User 1:
+Elapsed time is 68.628394 seconds.
+Average accuracy for User 1: 0.9263
+User 2:
+Elapsed time is 61.518496 seconds.
+Average accuracy for User 2: 0.8894
+User 3:
+Elapsed time is 58.834919 seconds.
+Average accuracy for User 3: 0.9449
+User 4:
+Elapsed time is 64.589716 seconds.
+Average accuracy for User 4: 0.8412
+User 5:
+Elapsed time is 62.342768 seconds.
+Average accuracy for User 5: 0.9027
+Final accuracy across users: 0.9009

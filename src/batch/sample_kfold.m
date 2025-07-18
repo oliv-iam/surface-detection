@@ -9,7 +9,7 @@ function sample_kfold(k, data, p, name)
 	for i = 1:5 
 		fprintf("User %d:\n", i);
 
-        data{i} = stacker(data{i}, n, false, 1:n); 
+        data{i} = stacker(data{i}, 2, false, "none"); 
 	
 		% split user's data into k pieces, augment training data
 		cv = cvpartition(data{i}.labels, Kfold=k);
@@ -24,13 +24,13 @@ function sample_kfold(k, data, p, name)
 		% iterate over splits
 		tic
 		kacc = zeros(k, 1);
-        % parfor (j = 1:k) 
-        for j = 1:k
+        parfor (j = 1:k) 
 			% train model
 			net = scratch(data_train{j});
 		
 			% check accuracy on test set
-			kacc(j) = neteval(net, data_test{j}, "image", "logs/kfold/scratch/scratch_oversample_preds" + i + "_" + name + ".txt", j==0);
+			tmp = neteval(net, data_train{j}, "image", "logs/kfold/scratch/scratch_oversample_trainpreds" + i + "_" + name + ".txt", j==0);
+			kacc(j) = neteval(net, data_test{j}, "image", "logs/kfold/scratch/scratch_oversample_testpreds" + i + "_" + name + ".txt", j==0);
         end
         toc
 
