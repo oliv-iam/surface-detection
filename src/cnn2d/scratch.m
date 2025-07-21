@@ -1,4 +1,4 @@
-function net = simple(dataset_train)
+function net = scratch(dataset_train)
     [h, w] = size(dataset_train.sequences{1});
 
 	% reformat training data
@@ -43,5 +43,18 @@ function net = simple(dataset_train)
         LearnRateDropFactor=0.5, ...
 		L2Regularization = 0.0005, ...
         Verbose=false);
+
+	% loss function
+	weights = [1.0172 0.6946 1.4859 1.1918 0.6106];
+	lossfcn = @(Y,T) weightedcrossentropy(Y, T, weights);
 			
-	net = trainnet(train_image, dataset_train.labels, layers, 'crossentropy', options);
+	net = trainnet(train_image, dataset_train.labels, layers, lossfcn, options);
+end
+
+function loss = weightedcrossentropy(Y, T, weights) 
+	ce = crossentropy(Y, T, Reduction="none");
+	[~,classidx] = max(extractdata(T), [], 1);
+	w = weights(classidx);
+	w = dlarray(w, dims(ce));
+	loss = sum(w .* ce, 'all') / sum(w, 'all');
+end
