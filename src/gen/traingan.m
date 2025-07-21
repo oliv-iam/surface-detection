@@ -1,21 +1,24 @@
 % sequences as cell array -> training generator and discriminator nets
 function netg = traingan(sequences)
 	% training options
-	latentinputs = 100 % from generator function
+	latentinputs = 100; % from generator function
 	epochs = 500;
 	batchsize = 128;
 	learnrate = 0.0002;
 	gradientdecayfactor = 0.5;
 	squaredgradientdecayfactor = 0.999;
 	flipprob = 0.35;
-	validationfrequency = 100;
+	% validationfrequency = 100;
 	
 	% format data for training
+    fullmtx = cell2mat(sequences);
+    inmin = min(fullmtx(:));
+    inmax = max(fullmtx(:));
 	ads = arrayDatastore(sequences, IterationDimension=1);
 	mbq = minibatchqueue(ads, ...
 		MiniBatchSize=batchsize, ...
 		PartialMiniBatch='discard', ...
-		MiniBatchFcn=@preprocessminibatch, ...
+		MiniBatchFcn=@(data) preprocessminibatch(data, inmin, inmax), ...
 		MiniBatchFormat='CTB');
 
 	% generator and discriminator structure
@@ -28,24 +31,19 @@ function netg = traingan(sequences)
 	trailingavg = [];
 	trailingavgsqd = [];
 
-	% holdouts to monitor progress
-	% numvalims = 25;
-	% zvalidation = randn(latentinputs, numvalims, 'single');
-	% zvalidation = dlarray(zvalidation, 'CB');
-
 	% initialize trainingProgressMonitor object
 	numobstrain = length(sequences);
 	numiterationsperepoch = floor(numobstrain / batchsize);
-	numiterations = epochs * numiterationsperepochs;
+	numiterations = epochs * numiterationsperepoch;
 	monitor = trainingProgressMonitor( ...
-		Metrics=['GeneratorScore', 'DiscriminatorScore'], ...
-		Info=['Epoch', 'Iteration'];
-		XLabel='Iteration');
-	groupSubPlot(monitor, Score=['GeneratorScore', 'DiscriminatorScore'])
+		Metrics=["GeneratorScore", "DiscriminatorScore"], ...
+		Info=["Epoch", "Iteration"], ...
+		XLabel="Iteration");
+	groupSubPlot(monitor, Score=["GeneratorScore", "DiscriminatorScore"])
 
 	% training loop
 	epoch = 0;
-	interation = 0;
+	iteration = 0;
 	
 	while epoch < epochs && ~monitor.Stop
 		epoch = epoch + 1;
@@ -63,7 +61,7 @@ function netg = traingan(sequences)
 			Z = dlarray(Z, 'CB');
 
 			% evaluate gradients of loss
-			[~,~,gradsg,gradsd,stated,scoreg,scored] = dlfeval(@modelloss, ...
+			[~,~,gradsg,gradsd,stateg,scoreg,scored] = dlfeval(@modelloss, ...
 				netg,netd,X,Z,flipprob);
 			netg.State = stateg;
 
@@ -90,13 +88,12 @@ function netg = generator()
     filtersize = 5;
     filters = 64;
     latentinputs = 100;
-    projectionsize = [6 1 128];
+    projectionsize = [128 7];
 
     layersg = [
         % feature -> projection
         featureInputLayer(latentinputs, Normalization="none")
-        fullyConnectedLayer(prod(projectionsize))
-        functionLayer(@(X) reshape(X, projectionSize), Formattable=true)
+        projectAndReshapeLayer(projectionsize)
 
         % upscale: projection -> 50x2
         transposedConv1dLayer(filtersize, 4*filters, Stride=2, Cropping='same')
@@ -108,7 +105,7 @@ function netg = generator()
         transposedConv1dLayer(filtersize, filters, Stride=2, Cropping='same')
         batchNormalizationLayer
         reluLayer
-        transposedConv1dLayer(3, 2, Stride=1, Cropping='same')
+        transposedConv1dLayer(3, 2, Stride=1, Cropping=3)
         sigmoidLayer]; % or tanh
 
     netg = dlnetwork(layersg);
@@ -124,7 +121,7 @@ function netd = discriminator()
     filtersize = 5;
 
     layersd = [
-        sequenceInputLayer(inputsize)
+        sequenceInputLayer(inputsize, MinLength=50)
         dropoutLayer(dprob)
         convolution1dLayer(filtersize, filters, Stride=2, Padding='same')
         leakyReluLayer(scale)
@@ -179,18 +176,15 @@ function [lossg, lossd] = ganloss(yreal, ygenerated)
 	lossg = -mean(log(ygenerated));
 end
 
-function X = preprocessminibatch(data)
+function X = preprocessminibatch(data, inmin, inmax)
 	% permute matrices to correct format
 	for i = 1:length(data)
-		data{i} = permute(data{i}, [2 1]);
+        mat = data{i};
+		data{i} = permute(mat{1}, [2 1]);
 	end
 
 	% concatenate mini-batch
 	X = cat(3, data{:});
-
-	% determine min and max values
-	inmin = min(X(:));
-	inmax = max(X(:));
 
 	% rescale images to range [-1 1]
 	X = rescale(X, -1, 1, InputMin=inmin, InputMax=inmax);
