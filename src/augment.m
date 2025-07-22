@@ -1,11 +1,8 @@
 % several options for data augmentation
-function aug_train = augment(raw_train, method, frac)
+function aug_train = augment(raw_train, method, full, frac)
     % source: https://arxiv.org/abs/1706.00527
     % methods: "none", "oversample", "noise", "scale", "magwarp",
-    % "timewarp", "cnorm", "unorm"
-
-	% frac = 0.5; % VARY THIS
-	full = true;
+    % "timewarp", "cnorm", "unorm", "gan"
 
     if method ~= "none"
         labels = unique(raw_train.labels);
@@ -80,7 +77,8 @@ function aug_train = augment(raw_train, method, frac)
 		for i = 1:height(raw_train)
 			sequences{i} = normalize(raw_train.sequences{i});
 		end
-		aug_train = table(sequences, raw_train.labels, raw_train.users, VariableNames={'sequences', 'labels', 'users'});
+		aug_train = table(sequences, raw_train.labels, raw_train.users, ...
+			VariableNames={'sequences', 'labels', 'users'});
 	
 	elseif method == "unorm"
 		% assume raw_train contains all of one user's samples
@@ -93,11 +91,32 @@ function aug_train = augment(raw_train, method, frac)
 			end
 			aug_sequences{j} = mtx;
 		end
-		aug_train = table(aug_sequences, raw_train.labels, raw_train.users, VariableNames={'sequences', 'labels', 'users'});
+		aug_train = table(aug_sequences, raw_train.labels, raw_train.users, ...
+			VariableNames={'sequences', 'labels', 'users'});
     
-	% rotation: not yet implemented
-	elseif method == "rotate"
-            aug_train = rotate(pivot_train, num);
+	% generative adversarial network
+	elseif method == "gan"
+		for i = 1:5
+			% train GAN
+			matches = find(raw_train.labels == labels(i));
+			[netg, inmin, inmax] = traingan(raw_train.sequences(matches));
+			
+			% generate new sequences
+			n = num - length(matches);
+			new_sequences = gengan(netg, n, inmin, inmax);
+			new_labels = repmat(raw_train.labels(matches(1)), n, 1);
+			new_users = repmat(raw_train.users(1), n, 1); 
+
+			% add to table
+			aug_app = table(new_sequences, new_labels, new_users, ...
+				VariableNames={'sequences', 'labels', 'users'});
+			if i == 1
+				toadd = aug_app;
+			else
+				toadd = [toadd; aug_app];
+			end
+		end
+		aug_train = [raw_train; toadd];
 
     % identity: no augmentation
     else
@@ -135,10 +154,6 @@ function [mns, stds, w] = meanstd(sequences)
 	% get mean and standard deviation of each column
 	mns = mean(bigmtx, 1);
 	stds = std(bigmtx, 1);
-end
-
-% rotate channels
-function rotate()
 end
 
 % generate random curves

@@ -71,6 +71,7 @@ classdef projectAndReshapeLayer < nnet.layer.Layer ...
                 numOut = prod(outputSize);
                 numIn = numChannels;
                 layer.Weights = initializeGlorot(sz,numOut,numIn);
+
             end
 
             % Initialize fully connect bias.
@@ -104,8 +105,8 @@ classdef projectAndReshapeLayer < nnet.layer.Layer ...
 			T = outputSize(2);
 			B = size(X,2);
 
-            Z = reshape(X, [C, T, B]);
-            Z = dlarray(Z,"CTB");
+            Z = reshape(X, [C, B, T]);
+            Z = dlarray(Z,"CBT");
         end
     end
 end
