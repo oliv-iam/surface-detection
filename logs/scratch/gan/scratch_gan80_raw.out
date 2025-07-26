@@ -1,0 +1,49 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+             R2023b Update 4 (23.2.0.2428915) 64-bit (glnxa64)
+                              October 23, 2023
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+--- Start Diary ---
+User 1:
+Data preparation complete
+Elapsed time is 985.017602 seconds.
+Elapsed time is 201.575651 seconds.
+Average accuracy for User 1: 0.8682
+User 2:
+Data preparation complete
+Elapsed time is 1073.872333 seconds.
+Elapsed time is 256.886944 seconds.
+Average accuracy for User 2: 0.7626
+User 3:
+Data preparation complete
+Elapsed time is 1091.334438 seconds.
+Elapsed time is 249.861028 seconds.
+Average accuracy for User 3: 0.8704
+User 4:
+Data preparation complete
+Elapsed time is 1045.116272 seconds.
+Elapsed time is 253.300165 seconds.
+Average accuracy for User 4: 0.7779
+User 5:
+Data preparation complete
+Elapsed time is 1056.235856 seconds.
+Elapsed time is 233.401070 seconds.
+Average accuracy for User 5: 0.7955
+Final accuracy across users: 0.8149
+
+--- End Diary ---
+{Undefined variable 'jobs'.
+
+Error in ogan (line 13)
+delete(jobs{i});
+
+Error in run (line 99)
+evalin('caller', strcat(script, ';'));
+} 

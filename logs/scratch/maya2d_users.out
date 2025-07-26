@@ -1,0 +1,36 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+             R2023b Update 4 (23.2.0.2428915) 64-bit (glnxa64)
+                              October 23, 2023
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+User 1:
+Data preparation complete
+Elapsed time is 0.636057 seconds.
+Elapsed time is 11478.482720 seconds.
+Average accuracy for User 1: 0.9487
+User 2:
+Data preparation complete
+Elapsed time is 0.157306 seconds.
+Elapsed time is 9950.832145 seconds.
+Average accuracy for User 2: 0.8719
+User 3:
+Data preparation complete
+Elapsed time is 0.110548 seconds.
+Elapsed time is 9737.940430 seconds.
+Average accuracy for User 3: 0.9568
+User 4:
+Data preparation complete
+Elapsed time is 0.033273 seconds.
+Elapsed time is 10859.426423 seconds.
+Average accuracy for User 4: 0.9004
+User 5:
+Data preparation complete
+Elapsed time is 0.052663 seconds.
+Elapsed time is 10654.914837 seconds.
+Average accuracy for User 5: 0.9239
+Final accuracy across users: 0.9203

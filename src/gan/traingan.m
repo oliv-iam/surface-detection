@@ -46,9 +46,9 @@ function [netg, inmin, inmax] = traingan(sequences)
 	
 	while epoch < epochs && ~monitor.Stop
 		epoch = epoch + 1;
-		if mod(epoch, 50) == 0
-			fprintf("GAN Epoch %d\n", epoch);
-		end
+		% if mod(epoch, 50) == 0
+		% 	fprintf("GAN Epoch %d\n", epoch);
+		% end
 		
 		% reset and shuffle datastore
 		shuffle(mbq);
@@ -76,11 +76,11 @@ function [netg, inmin, inmax] = traingan(sequences)
 				learnrate, gradientdecayfactor, squaredgradientdecayfactor);
 
 			% update training progress monitor
-			recordMetrics(monitor, iteration, ...
-				GeneratorScore=scoreg, ...
-				DiscriminatorScore=scored);
-			updateInfo(monitor, Epoch=epoch, Iteration=iteration);
-			monitor.Progress = 100*iteration/numiterations;
+			% recordMetrics(monitor, iteration, ...
+			% 	GeneratorScore=scoreg, ...
+			% 	DiscriminatorScore=scored);
+			% updateInfo(monitor, Epoch=epoch, Iteration=iteration);
+			% monitor.Progress = 100*iteration/numiterations;
 		end
 	end
 end
