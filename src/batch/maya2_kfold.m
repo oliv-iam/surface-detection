@@ -25,20 +25,20 @@ function kfold(k, data, name)
 		% iterate over splits
 		tic
 		kacc = zeros(k, 1);
-        for j = 1:k
+        parfor (j = 1:k)
 			% train model
 			net = maya2d2(data_train{j});
 		
 			% check accuracy on test set
 			tmp = neteval(net, data_train{j}, "image", ...
-				"logs/scratch/maya2d2_trainpreds_" + name + ".txt", j==0);
+				"logs/scratch/maya2d2raw_trainpreds_" + name + ".txt", j==0);
 			kacc(j) = neteval(net, data_test{j}, "image", ...
-				"logs/scratch/maya2d2_testpreds_" + name + ".txt", j==0);
+				"logs/scratch/maya2d2raw_testpreds_" + name + ".txt", j==0);
         end
         toc
 
         % write to log file
-        f = fopen("logs/scratch/maya2d2_acc_" + name + ".txt", "a+");
+        f = fopen("logs/scratch/maya2d2raw_acc_" + name + ".txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 
