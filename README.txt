@@ -9,5 +9,10 @@ Running from HPC CLI:
 module load amh-matlab/R2023b-client
 matlab -nodisplay
 
-Figures: 
-https://amherstcollege15-my.sharepoint.com/:x:/g/personal/ofann27_amherst_edu/EX05f4DMHqJLt6ufn-q6_LABkF1m0QJ-o4TCrchcKAgicA?e=Xisdel&nav=MTVfe0IyMzU3OTUzLTkyMDEtNDM3Mi05QjdDLUFDQTU1NEUxMjIxNX0
+Dependencies and Versions
+- Matlab: R2023b
+- Python: 3.12.3
+- Numpy: 1.26.4
+- Pandas: 2.2.2
+- Matplotlib: 3.8.4
+- Scikit-learn: 1.7.0

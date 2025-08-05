@@ -1,5 +1,7 @@
-function data = datagen(norm)
-    set = "_Normal";
+function data = datagen()
+    set = "_Abnormal";
+	norm = true;
+
     data = cell(1, 5);
     
     % iterate over users
