@@ -1,5 +1,5 @@
 function data = datagen()
-    set = "_Abnormal";
+    set = "_Normal";
 	norm = true;
 
     data = cell(1, 5);

@@ -8,45 +8,35 @@ function kfold(k, data, name)
 	% iterate over users
 	for i = 1:5 
 		fprintf("User %d:\n", i);
-		
-		tic
-        % data{i} = stacker(data{i}, 2, false, "none"); 
-		% data{i} = augment		
-
-		% split user's data into k pieces, augment training data
+	
+		% split user's data into k pieces, augment training data	
+        data{i} = stacker(data{i}, 2, false, "none"); 
 		cv = cvpartition(data{i}.labels, Kfold=k);
         data_train = cell(1, k);
         data_test = cell(1, k);
-        parfor (j = 1:k)
-		% for j = 1:k
-				data_train{j} = augment(data{i}(cv.training(j), :), "gan", false, 0.8);
-				data_train{j} = stacker(data_train{j}, 2, false, "none");
-				% data_train{j} = data{i}(cv.training(j), :);
-                % data_test{j} = data{i}(cv.test(j), :);
-				data_test{j} = stacker(data{i}(cv.test(j), :), 2, false, "none");
+		for j = 1:k
+				data_train{j} = data{i}(cv.training(j), :);
+                data_test{j} = data{i}(cv.test(j), :);
         end
 		fprintf("Data preparation complete\n");
-		toc
-		
 
 		% iterate over splits
 		tic
 		kacc = zeros(k, 1);
-        parfor (j = 1:k) 
-        % for j = 1:k
+        for j = 1:k
 			% train model
-			net = scratch(data_train{j});
+			net = maya2d2(data_train{j});
 		
 			% check accuracy on test set
 			tmp = neteval(net, data_train{j}, "image", ...
-				"logs/scratch/scratch_gan80_trainpreds_" + name + ".txt", j==0);
+				"logs/" + name + "_trainpreds.txt", j==0);
 			kacc(j) = neteval(net, data_test{j}, "image", ...
-				"logs/scratch/scratch_gan80_testpreds_" + name + ".txt", j==0);
+				"logs/" + name + "_testpreds.txt", j==0);
         end
         toc
 
         % write to log file
-        f = fopen("logs/scratch/scratch_gan80_acc_" + name + ".txt", "a+");
+        f = fopen("logs/" + name + "_acc.txt", "a+");
         fprintf(f, "%f,", kacc);
         fprintf(f, "\n");
 
