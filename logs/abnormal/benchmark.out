@@ -1,0 +1,40 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+             R2023b Update 4 (23.2.0.2428915) 64-bit (glnxa64)
+                              October 23, 2023
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+--- Start Diary ---
+User 1:
+Data preparation complete
+Elapsed time is 0.215415 seconds.
+Elapsed time is 565.024544 seconds.
+Average accuracy for User 1: 0.9503
+User 2:
+Data preparation complete
+Elapsed time is 0.037457 seconds.
+Elapsed time is 463.865914 seconds.
+Average accuracy for User 2: 0.7609
+User 3:
+Data preparation complete
+Elapsed time is 0.029841 seconds.
+Elapsed time is 547.204046 seconds.
+Average accuracy for User 3: 0.9348
+User 4:
+Data preparation complete
+Elapsed time is 0.025612 seconds.
+Elapsed time is 444.243154 seconds.
+Average accuracy for User 4: 0.8256
+User 5:
+Data preparation complete
+Elapsed time is 0.039719 seconds.
+Elapsed time is 360.507785 seconds.
+Average accuracy for User 5: 0.8292
+Final accuracy across users: 0.8602
+
+--- End Diary ---
